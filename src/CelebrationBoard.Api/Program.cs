@@ -1,4 +1,6 @@
 using System.Text.Json.Serialization;
+using CelebrationBoard.Api.Celebrations.Post;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,7 @@ builder.Services.AddControllers()
     })
     .AddFluentValidation(options =>
     {
-      options.RegisterValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+      options.RegisterValidatorsFromAssemblyContaining<PostCelebrationRequestValidator>();
     });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -58,3 +60,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// https://docs.microsoft.com/en-us/aspnet/core/migration/50-to-60-samples?view=aspnetcore-6.0#test-with-webapplicationfactory-or-testserver
+public partial class Program { }

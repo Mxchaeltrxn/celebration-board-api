@@ -1,16 +1,18 @@
 namespace CelebrationBoard.Domain.Celebrations;
 
-using System;
 using System.Collections.Generic;
 using CelebrationBoard.Domain.Common;
 
-public class CelebrationTag : BaseEntity
+public class Tag : BaseEntity
 {
-  public TagName Name { get; private set; } = default!;
+  public string Name { get; private set; } = default!;
   public IReadOnlyCollection<Celebration> Celebrations => (IReadOnlyCollection<Celebration>)_celebrations;
   private readonly ICollection<Celebration> _celebrations;
 
-  public CelebrationTag(TagName value)
+  protected Tag()
+  { }
+
+  public Tag(string value)
   {
     this.Name = value;
     this._celebrations = new List<Celebration>();

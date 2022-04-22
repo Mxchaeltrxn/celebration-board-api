@@ -16,7 +16,7 @@ public sealed class Content : ValueObject
 
   public static Result<Content, Error> Create(string input)
   {
-    if (string.IsNullOrEmpty(input))
+    if (string.IsNullOrWhiteSpace(input))
       return Errors.General.ValueIsRequired();
 
     var content = input.Trim();
@@ -42,7 +42,7 @@ public sealed class Content : ValueObject
     yield return Value;
   }
 
-  public TagName[] CalculateTags()
+  public string[] CalculateTags()
   {
     // '#tag' => 'tag'
     var singleWordHashTagMatches = new Regex(@"(?<=#)(\w*[A-Za-z_]+\w*)")
@@ -55,7 +55,6 @@ public sealed class Content : ValueObject
     return singleWordHashTagMatches.Concat(multiWordHashTagMatches)
       .Select(match => match.Value.Trim())
       .Where(t => !string.IsNullOrEmpty(t) && t.Length <= 100)
-      .Select(t => TagName.Create(t).Value)
       .ToArray();
   }
 }

@@ -28,6 +28,16 @@ public sealed class PrivacyLevel : ValueObject
     return new PrivacyLevel(privacyLevel);
   }
 
+  public static explicit operator PrivacyLevel(string privacyLevel)
+  {
+    return Create(privacyLevel).Value;
+  }
+
+  public static implicit operator string(PrivacyLevel privacyLevel)
+  {
+    return privacyLevel.Value;
+  }
+
   protected override IEnumerable<object> GetEqualityComponents()
   {
     yield return Value;

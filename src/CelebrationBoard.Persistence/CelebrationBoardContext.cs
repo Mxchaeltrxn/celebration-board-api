@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 public class CelebrationBoardContext : DbContext
 {
   public DbSet<Celebration> Celebration { get; set; }
-  public DbSet<CelebrationTag> CelebrationTag { get; set; }
+  public DbSet<Tag> CelebrationTag { get; set; }
   private readonly bool canLogToConsole;
   private readonly string connectionString;
   public CelebrationBoardContext(string connectionString, bool canLogToConsole)
@@ -26,14 +26,30 @@ public class CelebrationBoardContext : DbContext
     }
   }
 
-  protected override void OnModelCreating(ModelBuilder modelbuilder)
+  protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    base.OnModelCreating(modelbuilder);
-    modelbuilder.Entity<Celebration>(x =>
+    base.OnModelCreating(modelBuilder);
+    // tosave: https://stackoverflow.com/questions/69252014/entity-framework-core-multiple-many-to-many-with-linking-table-join-entity
+    // tosave: https://stackoverflow.com/questions/54196199/entity-framework-core-multiple-one-to-many-relationships-between-two-entities
+    // modelBuilder.Entity<FavouritedUserCelebration>().HasKey(e => new { e.CelebrationId, e.UserId });
+
+    modelBuilder.Entity<User>(x =>
+    {
+      x.ToTable("User").HasKey(y => y.Id);
+      x.HasMany(y => y.Celebrations).WithOne(y => y.User);
+
+    });
+    modelBuilder.Entity<Celebration>(x =>
         {
           x.ToTable("Celebration")
             .HasKey(k => k.Id);
           x.Navigation(e => e.Tags).AutoInclude();
+          x.HasMany(e => e.FavouritedUsers)
+          .WithMany(e => e.FavouritedCelebrations)
+          .UsingEntity<Dictionary<string, object>>(
+            "UserFavouritedCelebration",
+            x => x.HasOne<User>().WithMany(),
+            x => x.HasOne<Celebration>().WithMany());
           x.Property(p => p.Title)
     .HasConversion(
       title => title.Value,
@@ -44,19 +60,14 @@ public class CelebrationBoardContext : DbContext
       dbValue => (Content)dbValue);
           x.Property(p => p.AccessLevel)
     .HasConversion(
-      accessLevel => accessLevel.ToString(),
-      dbValue => (PrivacyLevel)Enum.Parse(typeof(PrivacyLevel), dbValue));
+      accessLevel => accessLevel.Value,
+      dbValue => (PrivacyLevel)dbValue!);
         });
 
-    modelbuilder.Entity<CelebrationTag>(x =>
+    modelBuilder.Entity<Tag>(x =>
     {
-      x.ToTable("CelebrationTag")
+      x.ToTable("Tag")
         .HasKey(k => k.Id);
-      x.Property(p => p.Name)
-  .HasConversion(
-    tagName => tagName.Value,
-    dbValue => (TagName)dbValue);
-      // x.Navigation(e => e.Celebrations).AutoInclude();
     });
 
     // modelbuilder.Entity<CelebrationAndTagRelationship>(x =>
@@ -80,6 +91,6 @@ public class CelebrationBoardContext : DbContext
     // v => v.ToString(),
     //             v => (EquineBeast)Enum.Parse(typeof(EquineBeast), v))
 
-    modelbuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
 }

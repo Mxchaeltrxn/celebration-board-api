@@ -21,4 +21,9 @@
     <ProjectReference Include="..\CelebrationBoard.Application\CelebrationBoard.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- https://docs.microsoft.com/en-us/aspnet/core/migration/50-to-60-samples?view=aspnetcore-6.0#test-with-webapplicationfactory-or-testserver -->
+    <InternalsVisibleTo Include="..\..\tests\CelebrationBoard.IntegrationTests\CelebrationBoard.IntegrationTests.csproj" />
+  </ItemGroup>
+
 </Project>

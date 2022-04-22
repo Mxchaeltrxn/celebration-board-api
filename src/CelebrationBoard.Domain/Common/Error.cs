@@ -58,10 +58,11 @@ public static class Errors
 
   public static class General
   {
-    public static Error NotFound(long? id = null)
+    public static Error NotFound(string? entityType = null, long? id = null)
     {
-      string forId = id == null ? "" : $" for Id '{id}'";
-      return new Error("record.not.found", $"Record not found{forId}");
+      string withId = id == null ? "" : $" with Id '{id}'";
+      var withEntityType = entityType == null ? "" : $" with type '{entityType}'";
+      return new Error("record.not.found", $"Entity{withEntityType} not found{withId}");
     }
 
     public static Error ValueIsInvalid() =>
