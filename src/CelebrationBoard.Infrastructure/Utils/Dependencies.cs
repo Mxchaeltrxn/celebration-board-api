@@ -1,16 +1,16 @@
 namespace CelebrationBoard.Infrastructure.Utils;
 
 using System.Text;
+using CelebrationBoard.Domain.Authentication;
+using CelebrationBoard.Infrastructure.Identity;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Hosting;
-using CelebrationBoard.Domain.Authentication;
-using Microsoft.EntityFrameworkCore;
-using CelebrationBoard.Infrastructure.Identity;
 
 public static class Dependencies
 {

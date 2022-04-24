@@ -62,8 +62,8 @@ public class User : BaseEntity
 public class UserCelebration
 {
   public long UserId { get; set; }
-  public User User { get; set; }
-  public Celebration Celebration { get; set; }
+  public User? User { get; set; }
+  public Celebration? Celebration { get; set; }
   public long CelebrationId { get; set; }
 }
 

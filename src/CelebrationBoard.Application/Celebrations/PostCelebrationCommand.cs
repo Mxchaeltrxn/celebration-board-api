@@ -24,11 +24,11 @@ public sealed class PostCelebrationCommand : IRequest<Result<long, Error>>
       _context = context;
     }
 
-    public async Task<Result<long, Error>> Handle(PostCelebrationCommand request, CancellationToken cancellationToken)
+    public Task<Result<long, Error>> Handle(PostCelebrationCommand request, CancellationToken cancellationToken)
     {
       var user = this._context.Set<User>().Find(request.UserId);
       if (user is null)
-        return Result.Failure<long, Error>(Errors.General.NotFound(nameof(User), request.UserId));
+        return Task.FromResult(Result.Failure<long, Error>(Errors.General.NotFound(nameof(User), request.UserId)));
 
       var title = Domain.Celebrations.Title.Create(request.Title).Value;
       var content = Domain.Celebrations.Content.Create(request.Content).Value;
@@ -54,7 +54,7 @@ public sealed class PostCelebrationCommand : IRequest<Result<long, Error>>
 
       _context.SaveChanges();
 
-      return Result.Success<long, Error>(celebration.Id);
+      return Task.FromResult(Result.Success<long, Error>(celebration.Id));
     }
   }
 }

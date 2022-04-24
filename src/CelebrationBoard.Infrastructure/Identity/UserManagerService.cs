@@ -1,10 +1,10 @@
 namespace CelebrationBoard.Infrastructure.Identity;
 
+using System.Linq;
+using System.Threading.Tasks;
 using CelebrationBoard.Domain.Authentication;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
-using System.Threading.Tasks;
 
 public class UserManagerService : IUserManager
 {

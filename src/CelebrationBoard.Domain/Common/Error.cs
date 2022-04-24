@@ -71,7 +71,7 @@ public static class Errors
     public static Error ValueIsRequired() =>
         new Error("value.is.required", "Value is required");
 
-    public static Error InvalidLength(string name = null)
+    public static Error InvalidLength(string? name = null)
     {
       string label = name == null ? " " : " " + name + " ";
       return new Error("invalid.string.length", $"Invalid{label}length");

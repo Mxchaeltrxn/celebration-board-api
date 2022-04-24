@@ -25,7 +25,7 @@ public sealed class ExceptionHandler
     {
       await HandleException(context, ex);
     }
-    
+
     Task HandleException(HttpContext context, Exception exception)
     {
       var errorMessage = _env.IsProduction() ? "Internal server error" : $"Exception: {exception.Message}";

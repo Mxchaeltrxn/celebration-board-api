@@ -1,23 +1,23 @@
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
+using AutoFixture;
+using AutoFixture.Xunit2;
+using CelebrationBoard.Api.Authentication;
+using CelebrationBoard.Api.Celebrations.Delete;
 using CelebrationBoard.Api.Celebrations.GetAll;
 using CelebrationBoard.Api.Celebrations.Post;
-using CelebrationBoard.IntegrationTests.Common;
-using CelebrationBoard.Api.Authentication;
-using System.Linq;
-using CelebrationBoard.Domain.Celebrations;
-using System;
-using Newtonsoft.Json;
-using System.Net;
-using Microsoft.Extensions.DependencyInjection;
 using CelebrationBoard.Api.Common;
+using CelebrationBoard.Domain.Celebrations;
+using CelebrationBoard.IntegrationTests.Common;
 using CSharpFunctionalExtensions;
-using AutoFixture.Xunit2;
-using System.Net.Mail;
-using AutoFixture;
-using CelebrationBoard.Api.Celebrations.Delete;
-using System.Net.Http;
-using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace CelebrationBoard.IntegrationTests.Celebrations;
 

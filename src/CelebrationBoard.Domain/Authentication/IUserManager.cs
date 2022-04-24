@@ -1,7 +1,7 @@
 namespace CelebrationBoard.Domain.Authentication;
 
-using CSharpFunctionalExtensions;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 
 public interface IUserManager
 {
