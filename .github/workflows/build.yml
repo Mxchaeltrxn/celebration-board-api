@@ -1,0 +1,37 @@
+name: Build and Test .NET CI
+
+on:
+  workflow_dispatch:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'tests/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'tests/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Build with dotnet 6
+      run: |
+        dotnet publish src/CelebrationBoard.Api/CelebrationBoard.Api.csproj --configuration Release
+        dotnet build tests/CelebrationBoard.UnitTests/CelebrationBoard.UnitTests.csproj --configuration Release
+        dotnet build tests/CelebrationBoard.IntegrationTests/CelebrationBoard.IntegrationTests.csproj --configuration Release
+    - name: chmod
+      run: chmod 555 ./scripts/run-tests.sh
+    - name: Run integration tests with Docker
+      run: sh ./scripts/run-tests.sh

@@ -33,7 +33,7 @@ public static class Dependencies
     services.AddDbContext<UserDbContext>(options =>
     {
       options.UseNpgsql(configuration["CelebrationBoardUsersConnectionString"])
-        .LogTo(Console.WriteLine, LogLevel.Information);
+      .LogTo(Console.WriteLine, LogLevel.Information);
     });
 
     services.AddScoped<IUserManager, UserManagerService>();

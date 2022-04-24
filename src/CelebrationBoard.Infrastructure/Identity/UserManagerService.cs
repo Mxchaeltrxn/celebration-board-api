@@ -1,10 +1,14 @@
 namespace CelebrationBoard.Infrastructure.Identity;
 
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using CelebrationBoard.Domain.Authentication;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 public class UserManagerService : IUserManager
 {
@@ -36,18 +40,61 @@ public class UserManagerService : IUserManager
       return await DeleteUserAsync(user);
 
     return Result.Success();
+
+    async Task<Result> DeleteUserAsync(ApplicationUser user)
+    {
+      var result = await _userManager.DeleteAsync(user);
+
+      if (result.Succeeded)
+      {
+        return Result.Success();
+      }
+
+      return Result.Failure<string>(result.Errors.Select(e => e.Description).First()); // TODO: Change to take array.
+    }
   }
 
-
-  public async Task<Result> DeleteUserAsync(ApplicationUser user)
+  public async Task<bool> CheckPasswordAsync(string userName, string password)
   {
-    var result = await _userManager.DeleteAsync(user);
+    var user = await FindByUserNameAsync(userName);
+    if (user is null)
+      return false;
 
-    if (result.Succeeded)
+    return await _userManager.CheckPasswordAsync(user, password);
+  }
+
+  public async Task<ApplicationUser> FindByUserNameAsync(string userName)
+  {
+    return await _userManager.FindByNameAsync(userName);
+  }
+
+  public async Task<string> GenerateToken(string userName, string jwtSecret, string jwtValidIssuer, string jwtValidAudience)
+  {
+    var user = await FindByUserNameAsync(userName);
+
+    var authClaims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim("id", user.Id.ToString())
+                };
+
+    var token = GetToken(authClaims);
+
+    return new JwtSecurityTokenHandler().WriteToken(token);
+
+    JwtSecurityToken GetToken(List<Claim> authClaims)
     {
-      return Result.Success();
-    }
+      var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
 
-    return Result.Failure<string>(result.Errors.Select(e => e.Description).First()); // TODO: Change to take array.
+      var token = new JwtSecurityToken(
+          issuer: jwtValidIssuer,
+          audience: jwtValidAudience,
+          expires: DateTime.Now.AddHours(3000),
+          claims: authClaims,
+          signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+          );
+
+      return token;
+    }
   }
 }

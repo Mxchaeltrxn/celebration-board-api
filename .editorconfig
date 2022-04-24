@@ -3,6 +3,8 @@
 indent_size = 2
 indent_style = space # Use soft tabs (spaces) for indentation.
 
+dotnet_diagnostic.CA1707.severity = none
+
 # IDE0055: Fix formatting
 dotnet_diagnostic.IDE0055.severity = warning
 

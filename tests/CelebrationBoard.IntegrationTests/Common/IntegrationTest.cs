@@ -27,9 +27,9 @@ public abstract class IntegrationTest : IClassFixture<ApiWebApplicationFactory>
     _factory = fixture;
     _client = _factory.CreateClient();
 
-    using var conn = new NpgsqlConnection(fixture.Configuration.GetConnectionString("DbContext"));
+    using var conn = new NpgsqlConnection(fixture.Configuration["CelebrationBoardConnectionString"]);
 
-    _celebrationBoardContext = new CelebrationBoardContext(fixture.Configuration.GetConnectionString("DbContext"), false);
+    _celebrationBoardContext = new CelebrationBoardContext(fixture.Configuration["CelebrationBoardConnectionString"], false);
 
     _celebrationBoardContext.Database.EnsureDeleted();
     _celebrationBoardContext.Database.EnsureCreated();

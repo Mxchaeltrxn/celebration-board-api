@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelebrationBoard.Integratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelebrationBoard.Infrastructure", "src\CelebrationBoard.Infrastructure\CelebrationBoard.Infrastructure.csproj", "{039CDBE8-2583-4121-B45F-A54D0FC503F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CelebrationBoard.UnitTests", "tests\CelebrationBoard.UnitTests\CelebrationBoard.UnitTests.csproj", "{15D96992-8A99-4E43-8DF7-4DB8AF150853}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,11 +48,16 @@ Global
 		{039CDBE8-2583-4121-B45F-A54D0FC503F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{039CDBE8-2583-4121-B45F-A54D0FC503F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{039CDBE8-2583-4121-B45F-A54D0FC503F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15D96992-8A99-4E43-8DF7-4DB8AF150853}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15D96992-8A99-4E43-8DF7-4DB8AF150853}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15D96992-8A99-4E43-8DF7-4DB8AF150853}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15D96992-8A99-4E43-8DF7-4DB8AF150853}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EE012E7A-FB12-4429-BD44-9391CC158C79} = {98B0E48D-7D41-4B1D-AF89-8D29CA97A918}
 		{A6B0A69A-BEBC-499D-928E-74DD74DC521E} = {98B0E48D-7D41-4B1D-AF89-8D29CA97A918}
 		{309ADB55-1DEA-4907-961E-07ADA9CA5DA8} = {0C5B967C-CC2C-4B3D-B316-D8FAF0906A1B}
 		{039CDBE8-2583-4121-B45F-A54D0FC503F8} = {98B0E48D-7D41-4B1D-AF89-8D29CA97A918}
+		{15D96992-8A99-4E43-8DF7-4DB8AF150853} = {0C5B967C-CC2C-4B3D-B316-D8FAF0906A1B}
 	EndGlobalSection
 EndGlobal

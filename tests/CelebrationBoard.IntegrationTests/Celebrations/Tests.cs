@@ -6,8 +6,6 @@ using System.Net.Http.Json;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using AutoFixture;
-using AutoFixture.Xunit2;
 using CelebrationBoard.Api.Authentication;
 using CelebrationBoard.Api.Celebrations.Delete;
 using CelebrationBoard.Api.Celebrations.GetAll;

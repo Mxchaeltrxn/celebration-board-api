@@ -4,12 +4,12 @@ using CelebrationBoard.Domain.Common;
 
 namespace CelebrationBoard.Api.Common;
 
-public sealed class ExceptionHandler
+public sealed class ExceptionHandlerMiddleware
 {
   private readonly RequestDelegate _next;
   private readonly IWebHostEnvironment _env;
 
-  public ExceptionHandler(RequestDelegate next, IWebHostEnvironment env)
+  public ExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvironment env)
   {
     _next = next;
     _env = env;

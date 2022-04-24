@@ -3,12 +3,13 @@ namespace CelebrationBoard.Persistence.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 
 public static class Dependencies
 {
-  public static void Init(IServiceProvider serviceProvider, IWebHostEnvironment environment)
+  // TODO: Unsure why IWebHostEnvironment can't be used as a type for `environment`, but it can be used in Infrastructure/Dependencies.cs
+  // Apparently IHostingEnvironment will be deprecated later.
+  public static void Init(IServiceProvider serviceProvider, IHostingEnvironment environment)
   {
     if (environment.IsDevelopment())
     {

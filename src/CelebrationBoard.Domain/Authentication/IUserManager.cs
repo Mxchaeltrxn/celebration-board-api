@@ -5,7 +5,6 @@ using CSharpFunctionalExtensions;
 
 public interface IUserManager
 {
-  Task<Result<string>> CreateUserAsync(string userName, string email, string password);
-
-  Task<Result> DeleteUserAsync(string userId);
+  public Task<Result<string>> CreateUserAsync(string userName, string email, string password);
+  public Task<Result> DeleteUserAsync(string userId);
 }

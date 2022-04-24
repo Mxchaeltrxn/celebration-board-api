@@ -1,6 +1,4 @@
 {
-  "ConnectionStrings": {
-    "DbContext": "Username=postgres;Password=password;Server=localhost:5432;Database=celebration_board",
-    "UserDbContext": "Username=postgres;Password=password;Server=localhost:5432;Database=user_celebration_board"
-  }
+  "CelebrationBoardConnectionString": "Username=postgres;Password=password;Server=db:5432;Database=celebration_board",
+  "CelebrationBoardUsersConnectionString": "Username=postgres;Password=password;Server=user-db:5432;Database=celebration_user_board"
 }

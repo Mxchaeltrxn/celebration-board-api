@@ -55,6 +55,7 @@ public sealed class Content : ValueObject
     return singleWordHashTagMatches.Concat(multiWordHashTagMatches)
       .Select(match => match.Value.Trim())
       .Where(t => !string.IsNullOrEmpty(t) && t.Length <= 100)
+      .Distinct()
       .ToArray();
   }
 }

@@ -1,8 +1,5 @@
 // namespace CelebrationBoard.Api.Authentication;
-
-// using System.Security.Claims;
-// using CelebrationBoard.Infrastructure.Identity;
-// using Microsoft.AspNetCore.Identity;
+// using CelebrationBoard.Domain.Authentication;
 
 
 // public class LoginController : BaseController
@@ -32,27 +29,13 @@
 //   [SwaggerResponse(500, "Unexpected server error.")]
 //   public async Task<IActionResult> Login(LoginRequest request)
 //   {
-//     var user = await userManager.FindByNameAsync(request.Username);
-//     if (user is not null && await userManager.CheckPasswordAsync(user, request.Password))
+//     var user = userManager.FindByUserNameAsync(request.Username);
+//     if (await userManager.CheckPasswordAsync(user, request.Password))
 //     {
-//       var userRoles = await userManager.GetRolesAsync(user);
-
-//       var authClaims = new List<Claim>
-//                 {
-//                     new Claim(ClaimTypes.Name, user.UserName),
-//                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-//                 };
-
-//       foreach (var userRole in userRoles)
-//       {
-//         authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-//       }
-
-//       var token = GetToken(authClaims);
-
+//       var token = userManager.GenerateToken(user, configuration["JWT:Secret"], configuration["JWT:ValidIssuer"], configuration["JWT:ValidAudience"]);
 //       return Ok(new
 //       {
-//         token = new JwtSecurityTokenHandler().WriteToken(token),
+//         token = token,
 //         expiration = token.ValidTo
 //       });
 //     }
@@ -61,20 +44,5 @@
 //       Title = "Unauthorised access",
 //       Detail = "You do not have the permissions to access this resource. Please make sure you are using the correct credentials and are accessing the correct resource."
 //     });
-
-//     JwtSecurityToken GetToken(List<Claim> authClaims)
-//     {
-//       var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
-
-//       var token = new JwtSecurityToken(
-//           issuer: configuration["JWT:ValidIssuer"],
-//           audience: configuration["JWT:ValidAudience"],
-//           expires: DateTime.Now.AddHours(3000),
-//           claims: authClaims,
-//           signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-//           );
-
-//       return token;
-//     }
 //   }
 // }
