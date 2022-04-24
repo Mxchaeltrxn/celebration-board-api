@@ -23,6 +23,6 @@ public partial class CelebrationsController : BaseController
     if (sendOrError.IsFailure)
       return this.FromResult(sendOrError);
 
-    return this.NoContent();
+    return this.Ok();
   }
 }

@@ -70,6 +70,12 @@ public class CelebrationBoardContext : DbContext
         .HasKey(k => k.Id);
     });
 
+    modelBuilder.Entity<User>(x =>
+    {
+      x.ToTable("User")
+        .HasKey(k => k.Id);
+    });
+
     // modelbuilder.Entity<CelebrationAndTagRelationship>(x =>
     // {
     //   // x.ToTable("CelebrationAndTagRelationship")

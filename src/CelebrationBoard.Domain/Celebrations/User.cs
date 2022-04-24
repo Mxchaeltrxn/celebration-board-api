@@ -5,6 +5,7 @@ using CelebrationBoard.Domain.Common;
 
 public class User : BaseEntity
 {
+  public Guid UserId { get; set; }
   public IReadOnlyCollection<Celebration> FavouritedCelebrations => (IReadOnlyCollection<Celebration>)this._favouritedCelebrations;
   private readonly ICollection<Celebration> _favouritedCelebrations;
 
@@ -14,8 +15,9 @@ public class User : BaseEntity
   public IReadOnlyCollection<Celebration> Celebrations => (IReadOnlyCollection<Celebration>)this._celebrations;
   private readonly ICollection<Celebration> _celebrations;
 
-  public User(long id) : base(id)
+  public User(Guid userId)
   {
+    UserId = userId;
   }
 
   public void PostCelebration(Celebration celebration)

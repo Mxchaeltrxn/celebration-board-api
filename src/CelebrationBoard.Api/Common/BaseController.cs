@@ -12,7 +12,7 @@ public abstract class BaseController : ControllerBase
 
   protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>()!;
 
-  protected new IActionResult Ok(object result)
+  protected new IActionResult Ok(object? result = null)
   {
     return new EnvelopeResult(Envelope.Ok(result), HttpStatusCode.OK);
   }

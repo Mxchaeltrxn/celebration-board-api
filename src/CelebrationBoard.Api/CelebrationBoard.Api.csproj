@@ -19,6 +19,7 @@
     <ProjectReference Include="..\CelebrationBoard.Persistence\CelebrationBoard.Persistence.csproj" />
     <ProjectReference Include="..\CelebrationBoard.Domain\CelebrationBoard.Domain.csproj" />
     <ProjectReference Include="..\CelebrationBoard.Application\CelebrationBoard.Application.csproj" />
+    <ProjectReference Include="..\CelebrationBoard.Infrastructure\CelebrationBoard.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using CelebrationBoard.Api.Celebrations.Post;
 using FluentValidation.AspNetCore;
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 CelebrationBoard.Application.Utils.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 CelebrationBoard.Persistence.Utils.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+CelebrationBoard.Infrastructure.Utils.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
 builder.Services.AddControllers()
         .AddJsonOptions(
@@ -39,10 +41,10 @@ builder.Services.AddVersionedApiExplorer(options =>
 var app = builder.Build();
 
 using var scope = app.Services.CreateScope();
-var forumContext = scope.ServiceProvider.GetRequiredService<CelebrationBoardContext>();
-forumContext.Database.EnsureDeleted();
+var serviceProvider = scope.ServiceProvider;
 
-forumContext.Database.EnsureCreated();
+CelebrationBoard.Persistence.Utils.Dependencies.Init(serviceProvider, app.Environment);
+CelebrationBoard.Infrastructure.Utils.Dependencies.Init(serviceProvider, app.Environment);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -55,6 +57,7 @@ app.UseMiddleware<ExceptionHandler>();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

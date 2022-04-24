@@ -10,7 +10,7 @@ public class ModelStateValidator
     string errorSerialized = entry!.Errors.First().ErrorMessage;
 
     Error error = Error.Deserialise(errorSerialized);
-    Envelope envelope = Envelope.Error(error, fieldName);
+    var envelope = Envelope.Error(error, fieldName);
     var envelopeResult = new EnvelopeResult(envelope, HttpStatusCode.BadRequest);
 
     return envelopeResult;
