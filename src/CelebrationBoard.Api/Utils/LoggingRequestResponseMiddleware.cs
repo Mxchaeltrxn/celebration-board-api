@@ -1,4 +1,4 @@
-namespace CelebrationBoard.Api.Common;
+namespace CelebrationBoard.Api.Utils;
 using System.Text;
 using Serilog;
 
@@ -42,8 +42,6 @@ public sealed class RequestResponseLoggingMiddleware
 
   private static async Task<string> FormatRequest(HttpRequest request)
   {
-    var body = request.Body;
-
     //This line allows us to set the reader for the request back at the beginning of its stream.
     request.EnableBuffering();
 

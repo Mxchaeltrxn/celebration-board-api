@@ -1,6 +1,6 @@
 using CelebrationBoard.Domain.Common;
 
-namespace CelebrationBoard.Api.Common;
+namespace CelebrationBoard.Api.Utils;
 
 public class Envelope
 {
@@ -37,6 +37,4 @@ public class Envelope<T>
   public string? ErrorMessage { get; set; }
   public string? InvalidField { get; set; }
   public DateTime TimeGenerated { get; set; }
-
-
 }

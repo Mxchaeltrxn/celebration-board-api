@@ -4,20 +4,20 @@ public partial class CelebrationsController : BaseController
 {
   // [Authorize]
   [ApiVersion("1.0")]
-  [HttpPut("{celebrationId}/edit/privacy-level")]
+  [HttpPut("celebrations/{celebrationId}/edit")]
   [SwaggerOperation(
-      Summary = "Create a post.",
-      Description = "Create a new post.",
-      Tags = new[] { "PostEndpoints" })
+      Summary = "Create a celebration.",
+      Tags = new[] { "CelebrationEndpoints" })
   ]
-  [SwaggerResponse(201, "Post created.", typeof(Celebration))]
-  [SwaggerResponse(400, "One or more payload fields are invalid, and therefore the post could not be created.")]
+  [SwaggerResponse(201, "Celebration content or title edited.", typeof(Celebration))]
+  [SwaggerResponse(400, "One or more request fields are invalid, and therefore the celebration could not be created.")]
   // [SwaggerResponse(403, "You are not authorised to create a post.")]
   [SwaggerResponse(500, "Unexpected server error.")]
   public async Task<IActionResult> EditCelebration(EditCelebrationRequest request)
   {
     var sendOrError = await base.Mediator.Send(new EditCelebrationCommand(
-      id: request.Id,
+      userId: request.UserId,
+      celebrationId: request.CelebrationId,
       title: request.Title,
       content: request.Content
     ));

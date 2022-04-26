@@ -10,18 +10,18 @@ using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-public class UserManagerService : IUserManager
+public class IdentityService : IIdentityService
 {
   private readonly UserManager<ApplicationUser> _userManager;
 
-  public UserManagerService(UserManager<ApplicationUser> userManager)
+  public IdentityService(UserManager<ApplicationUser> userManager)
   {
     _userManager = userManager;
   }
 
-  public async Task<Result<string>> CreateUserAsync(string userName, string email, string password)
+  public async Task<Result<string>> CreateUserAsync(string username, string email, string password)
   {
-    var user = new ApplicationUser(userName: userName, email: email);
+    var user = new ApplicationUser(userName: username, email: email);
 
     var result = await _userManager.CreateAsync(user, password);
     if (result.Succeeded)
@@ -54,28 +54,24 @@ public class UserManagerService : IUserManager
     }
   }
 
-  public async Task<bool> CheckPasswordAsync(string userName, string password)
+  public async Task<bool> CheckPasswordAsync(string username, string password)
   {
-    var user = await FindByUserNameAsync(userName);
+    var user = await _userManager.FindByNameAsync(username);
+
     if (user is null)
       return false;
 
     return await _userManager.CheckPasswordAsync(user, password);
   }
 
-  public async Task<ApplicationUser> FindByUserNameAsync(string userName)
+  public async Task<string> GenerateTokenAsync(string userName, string jwtSecret, string jwtValidIssuer, string jwtValidAudience)
   {
-    return await _userManager.FindByNameAsync(userName);
-  }
-
-  public async Task<string> GenerateToken(string userName, string jwtSecret, string jwtValidIssuer, string jwtValidAudience)
-  {
-    var user = await FindByUserNameAsync(userName);
+    var user = await _userManager.FindByNameAsync(userName);
 
     var authClaims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim("id", user.Id.ToString())
+                    new Claim(ClaimTypes.NameIdentifier, user.Id)
                 };
 
     var token = GetToken(authClaims);
@@ -89,12 +85,22 @@ public class UserManagerService : IUserManager
       var token = new JwtSecurityToken(
           issuer: jwtValidIssuer,
           audience: jwtValidAudience,
-          expires: DateTime.Now.AddHours(3000),
+          expires: DateTime.Now.AddHours(3000), // TODO: What value should this be?
           claims: authClaims,
           signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
           );
 
       return token;
     }
+  }
+
+  public async Task<bool> IsDuplicateEmailAsync(string emailAddress)
+  {
+    return await _userManager.FindByEmailAsync(emailAddress) is not null;
+  }
+
+  public async Task<bool> IsDuplicateUsernameAsync(string username)
+  {
+    return await _userManager.FindByNameAsync(username) is not null;
   }
 }

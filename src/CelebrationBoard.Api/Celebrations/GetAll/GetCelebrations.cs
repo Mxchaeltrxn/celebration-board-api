@@ -2,15 +2,15 @@ namespace CelebrationBoard.Api.Celebrations.GetAll;
 
 public partial class CelebrationsController : BaseController
 {
+  [AllowAnonymous]
   [ApiVersion("1.0")]
-  [HttpGet]
+  [HttpGet("celebrations")]
   [SwaggerOperation(
-    Summary = "Gets a list of posts",
-    Description = "Gets all posts.",
+    Summary = "Gets a list of celebrations",
     Tags = new[] { "CelebrationEndpoints" })
   ]
   [SwaggerResponse(200, "Celebrations retrieved.", typeof(Celebration))]
-  [SwaggerResponse(400, "One or more payload fields are invalid.")]
+  [SwaggerResponse(400, "One or more request fields are invalid.")]
   [SwaggerResponse(500, "Unexpected server error.")]
   public async Task<IActionResult> GetCelebrations()
   {

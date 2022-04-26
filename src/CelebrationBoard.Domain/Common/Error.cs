@@ -38,26 +38,28 @@ public sealed class Error : ValueObject
 
 public static class Errors
 {
-  public static class Student
+  public static class User
   {
-    public static Error TooManyEnrollments() =>
-        new Error("student.too.many.enrollments", "Student cannot have more than 2 enrollments");
-
-    public static Error AlreadyEnrolled(string courseName) =>
-        new Error("student.already.enrolled", $"Student is already enrolled into course '{courseName}'");
-
     public static Error EmailIsTaken() =>
-        new Error("student.email.is.taken", "Student email is taken");
+        new Error("user.email.is.taken", "User email is taken");
 
-    public static Error InvalidState(string name) =>
-        new Error("invalid.state", $"Invalid state: '{name}'");
+    public static Error UsernameIsTaken() =>
+        new Error("user.username.is.taken", "User username is taken");
 
-    public static Error CourseIsInvalid() =>
-        new Error("course.is.invalid", "Course is invalid");
+    public static Error InvalidCredentials() =>
+        new Error("user.credentials.invalid", "User credentials do not pass security requirements for user creation");
+
+
   }
 
   public static class General
   {
+    public static Error Unauthorised(long? userId = null)
+    {
+      string ofUser = userId == null ? "" : $" of user with Id '{userId}'";
+      return new Error("user.does.not.have.required.permissions", $"User does not have permission to access the requested resources{ofUser}");
+    }
+
     public static Error NotFound(string? entityType = null, long? id = null)
     {
       string withId = id == null ? "" : $" with Id '{id}'";
@@ -68,8 +70,8 @@ public static class Errors
     public static Error ValueIsInvalid() =>
         new Error("value.is.invalid", "Value is invalid");
 
-    public static Error ValueIsRequired() =>
-        new Error("value.is.required", "Value is required");
+    public static Error GreaterThan(int greaterThan) =>
+        new Error("value.is.required", $"Value must be greater than '{greaterThan}'");
 
     public static Error InvalidLength(string? name = null)
     {
@@ -77,19 +79,8 @@ public static class Errors
       return new Error("invalid.string.length", $"Invalid{label}length");
     }
 
-    public static Error CollectionIsTooSmall(int min, int current)
-    {
-      return new Error(
-          "collection.is.too.small",
-          $"The collection must contain {min} items or more. It contains {current} items.");
-    }
-
-    public static Error CollectionIsTooLarge(int max, int current)
-    {
-      return new Error(
-          "collection.is.too.large",
-          $"The collection must contain {max} items or more. It contains {current} items.");
-    }
+    public static Error ValueIsRequired() =>
+      new Error("value.is.required", "Value is required");
 
     public static Error InternalServerError(string message)
     {

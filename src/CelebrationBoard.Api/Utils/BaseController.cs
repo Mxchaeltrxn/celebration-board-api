@@ -1,11 +1,13 @@
 using System.Net;
 using CelebrationBoard.Domain.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
-namespace CelebrationBoard.Api.Common;
+namespace CelebrationBoard.Api.Utils;
 
+[Authorize]
 [ApiController]
-[Route("api/v{version:apiVersion}/[controller]")]
+[Route("api/v{version:apiVersion}")]
 public abstract class BaseController : ControllerBase
 {
   private IMediator? _mediator;
@@ -34,6 +36,12 @@ public abstract class BaseController : ControllerBase
 
     if (result.Error == Errors.General.NotFound())
       return NotFound(Envelope.Error(result.Error, null));
+
+    if (result.Error == Errors.User.InvalidCredentials())
+      return Unauthorized(Envelope.Error(result.Error, null));
+
+    if (result.Error == Errors.User.EmailIsTaken() || result.Error == Errors.User.EmailIsTaken())
+      return base.StatusCode((int)HttpStatusCode.Conflict, Envelope.Error(result.Error, null));
 
     return BadRequest(Envelope.Error(result.Error, null));
   }

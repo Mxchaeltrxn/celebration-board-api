@@ -4,17 +4,15 @@ namespace CelebrationBoard.Api.Celebrations.PostCelebration;
 
 public partial class CelebrationsController : BaseController
 {
-  // [Authorize]
   [ApiVersion("1.0")]
-  [HttpPost]
+  [HttpPost("celebrations")]
   [SwaggerOperation(
-      Summary = "Create a post.",
-      Description = "Create a new post.",
-      Tags = new[] { "PostEndpoints" })
+      Summary = "Create a celebration.",
+      Tags = new[] { "CelebrationEndpoints" })
   ]
-  [SwaggerResponse(201, "Post created.", typeof(Celebration))]
-  [SwaggerResponse(400, "One or more payload fields are invalid, and therefore the post could not be created.")]
-  // [SwaggerResponse(403, "You are not authorised to create a post.")]
+  [SwaggerResponse(201, "Celebration created.", typeof(Celebration))]
+  [SwaggerResponse(400, "One or more request fields are invalid, and therefore the celebration could not be created.")]
+  [SwaggerResponse(403, "You are not authorised to create a post.")]
   [SwaggerResponse(500, "Unexpected server error.")]
   public async Task<IActionResult> PostCelebration(PostCelebrationRequest request)
   {

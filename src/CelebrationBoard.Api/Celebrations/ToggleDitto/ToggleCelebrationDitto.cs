@@ -7,7 +7,7 @@
 //   [SwaggerOperation(
 //        Summary = "Update a single post.",
 //        Description = "Idempotently update a post.",
-//        Tags = new[] { "PostEndpoints" })
+//        Tags = new[] { "CelebrationEndpoints" })
 //    ]
 //   [SwaggerResponse(200, "The product was updated.", typeof(Celebration))]
 //   [SwaggerResponse(400, "One or more payload fields are invalid.")]

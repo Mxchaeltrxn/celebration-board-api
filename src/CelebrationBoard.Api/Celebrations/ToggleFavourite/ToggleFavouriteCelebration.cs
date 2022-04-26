@@ -5,16 +5,15 @@ namespace CelebrationBoard.Api.Celebrations;
 public sealed class CelebrationsController : BaseController
 {
   [ApiVersion("1.0")]
-  [HttpPut("/api/v{version:apiVersion}/posts")]
+  [HttpPut("celebrations/{celebrationId}/toggle-favourite")]
   [SwaggerOperation(
-        Summary = "Update a single post.",
-        Description = "Idempotently update a post.",
-        Tags = new[] { "PostEndpoints" })
+        Summary = "Update a single celebration.",
+        Tags = new[] { "CelebrationEndpoints" })
     ]
-  [SwaggerResponse(200, "The product was updated.", typeof(Celebration))]
-  [SwaggerResponse(400, "One or more payload fields are invalid.")]
-  [SwaggerResponse(403, "You are not authorised to update this post.")]
-  [SwaggerResponse(404, "The post with provided id could not be found, and therefore could not be updated.")]
+  [SwaggerResponse(200, "Celebration favourite field toggled.", typeof(Celebration))]
+  [SwaggerResponse(400, "One or more request fields are invalid.")]
+  [SwaggerResponse(403, "You are not authorised to update this celebration.")]
+  [SwaggerResponse(404, "The celebration with provided id could not be found, and therefore could not be updated.")]
   [SwaggerResponse(500, "Unexpected server error.")]
   public async Task<IActionResult> ToggleCelebrationFavourite(ToggleFavouriteCelebrationRequest request)
   {

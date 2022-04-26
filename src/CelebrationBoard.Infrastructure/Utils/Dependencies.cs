@@ -14,10 +14,13 @@ using Microsoft.IdentityModel.Tokens;
 
 public static class Dependencies
 {
-  public static void Init(IServiceProvider serviceProvider, IWebHostEnvironment environment)
+  public static void InitInfrastructureDependencies(this IServiceProvider services, IWebHostEnvironment environment)
   {
     if (environment.IsDevelopment())
     {
+      using var scope = services.CreateScope();
+      var serviceProvider = scope.ServiceProvider;
+
       var userDbContext = serviceProvider.GetRequiredService<UserDbContext>();
       userDbContext.Database.EnsureDeleted();
       userDbContext.Database.EnsureCreated();
@@ -28,7 +31,7 @@ public static class Dependencies
     }
   }
 
-  public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
+  public static void AddInfrastructureDependencies(this IServiceCollection services, IConfiguration configuration)
   {
     services.AddDbContext<UserDbContext>(options =>
     {
@@ -36,7 +39,10 @@ public static class Dependencies
       .LogTo(Console.WriteLine, LogLevel.Information);
     });
 
-    services.AddScoped<IUserManager, UserManagerService>();
+    services.AddScoped<IIdentityService, IdentityService>();
+    services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
+    services.AddHttpContextAccessor(); // TODO: Is this needed?
 
     services.AddIdentity<ApplicationUser, IdentityRole>()
           .AddEntityFrameworkStores<UserDbContext>()

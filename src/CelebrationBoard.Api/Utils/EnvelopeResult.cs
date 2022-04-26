@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace CelebrationBoard.Api.Common;
+namespace CelebrationBoard.Api.Utils;
 
 public sealed class EnvelopeResult : IActionResult
 {

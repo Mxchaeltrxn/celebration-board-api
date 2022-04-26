@@ -18,24 +18,31 @@ public sealed class RegisterCommand : IRequest<Result<long, Error>>
   internal sealed class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<long, Error>>
   {
     private readonly CelebrationBoardContext _context;
-    private readonly IUserManager userManager;
+    private readonly IIdentityService _identityService;
 
-    public RegisterCommandHandler(CelebrationBoardContext context, IUserManager userManager)
+    public RegisterCommandHandler(CelebrationBoardContext context, IIdentityService identityService)
     {
       _context = context;
-      this.userManager = userManager;
+      this._identityService = identityService;
     }
 
     public async Task<Result<long, Error>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-      var result = await this.userManager.CreateUserAsync(request.Username, request.EmailAddress, request.Password);
-      var guid = Guid.Parse(result.Value);
-      var user = new User(guid);
+      var isDuplicateUsername = await _identityService.IsDuplicateUsernameAsync(request.Username);
+      var isDuplicateEmailAddress = await _identityService.IsDuplicateEmailAsync(request.EmailAddress);
+      if (isDuplicateUsername)
+        return Errors.User.UsernameIsTaken();
+
+      if (isDuplicateEmailAddress)
+        return Errors.User.EmailIsTaken();
+
+      var createUserOrError = await this._identityService.CreateUserAsync(request.Username, request.EmailAddress, request.Password);
+      if (createUserOrError.IsFailure)
+        return Errors.User.InvalidCredentials();
+
+      var user = new User(Guid.Parse(createUserOrError.Value));
       _context.Set<User>().Add(user);
       _context.SaveChanges();
-      if (result.IsFailure)
-      {
-      }
 
       return Result.Success<long, Error>(user.Id);
     }

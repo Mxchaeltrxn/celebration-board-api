@@ -1,10 +1,10 @@
 namespace CelebrationBoard.Api.Celebrations.Post;
 
-public class PostCelebrationRequestValidator : AbstractValidator<PostCelebrationRequest>
+public class ToggleFavouriteCelebrationRequestValidator : AbstractValidator<PostCelebrationRequest>
 {
-  public PostCelebrationRequestValidator()
+  public ToggleFavouriteCelebrationRequestValidator()
   {
-    RuleFor(x => x.UserId).NotNull();
+    RuleFor(x => x.UserId).NotNull().GreaterThan(0);
     RuleFor(x => x.Title)
       .MustBeValueObject(Title.Create);
     RuleFor(x => x.Content)

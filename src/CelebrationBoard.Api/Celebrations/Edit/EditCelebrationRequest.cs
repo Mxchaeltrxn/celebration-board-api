@@ -1,2 +1,2 @@
 namespace CelebrationBoard.Api.Celebrations.Edit;
-public sealed record EditCelebrationRequest(long Id, string? Title, string Content);
+public sealed record EditCelebrationRequest(long UserId, [FromQuery] long CelebrationId, string? Title, string Content);

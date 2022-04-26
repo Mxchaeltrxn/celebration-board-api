@@ -1,11 +1,11 @@
 namespace CelebrationBoard.Application.Utils;
 using System.Reflection;
-using Microsoft.Extensions.Configuration;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 public static class Dependencies
 {
-  public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
+  public static void AddApplicationDependencies(this IServiceCollection services)
   {
     services.AddMediatR(Assembly.GetExecutingAssembly());
   }

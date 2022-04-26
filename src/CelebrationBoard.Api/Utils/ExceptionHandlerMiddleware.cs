@@ -2,7 +2,7 @@ using System.Net;
 using System.Text.Json;
 using CelebrationBoard.Domain.Common;
 
-namespace CelebrationBoard.Api.Common;
+namespace CelebrationBoard.Api.Utils;
 
 public sealed class ExceptionHandlerMiddleware
 {

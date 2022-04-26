@@ -3,21 +3,21 @@ namespace CelebrationBoard.Api.Celebrations.Delete;
 public partial class CelebrationsController : BaseController
 {
   [ApiVersion("1.0")]
-  [HttpDelete]
+  [HttpDelete("celebrations/{celebrationId}")]
   [SwaggerOperation(
-       Summary = "Delete a post.",
-       Description = "Delete an existing post.",
-       Tags = new[] { "PostEndpoints" })
+       Summary = "Delete a celebration.",
+       Tags = new[] { "CelebrationEndpoints" })
    ]
-  [SwaggerResponse(204, "Post deleted.", typeof(Celebration))]
-  [SwaggerResponse(400, "One or more payload fields are invalid.")]
-  [SwaggerResponse(403, "You are not authorised to delete this post. Users can only delete this own posts.")]
-  [SwaggerResponse(404, "Post with given id could not be found, and therefore could not be deleted.")]
+  [SwaggerResponse(204, "Celebration deleted.", typeof(Celebration))]
+  [SwaggerResponse(400, "One or more request fields are invalid.")]
+  [SwaggerResponse(403, "You are not authorised to delete this celebration. Users can only delete their own celebrations.")]
+  [SwaggerResponse(404, "Celebration with given id could not be found, and therefore could not be deleted.")]
   [SwaggerResponse(500, "Unexpected server error.")]
   public async Task<IActionResult> DeleteCelebration(DeleteCelebrationRequest request)
   {
     var sendOrError = await base.Mediator.Send(new DeleteCelebrationCommand(
-       id: request.Id
+       userId: request.UserId,
+       celebrationId: request.CelebrationId
      ));
 
     if (sendOrError.IsFailure)

@@ -6,6 +6,18 @@ namespace CelebrationBoard.Api.Celebrations;
 
 public static class CustomValidators
 {
+  public static IRuleBuilderOptions<T, TProperty> NotEmpty<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder)
+  {
+    return DefaultValidatorExtensions.NotEmpty(ruleBuilder)
+        .WithMessage(Errors.General.ValueIsRequired().Serialise());
+  }
+
+  public static IRuleBuilderOptions<T, int> GreaterThan<T>(this IRuleBuilder<T, int> ruleBuilder, int greaterThanValue)
+  {
+    return DefaultValidatorExtensions.GreaterThan(ruleBuilder, greaterThanValue)
+        .WithMessage(Errors.General.GreaterThan(greaterThanValue).Serialise());
+  }
+
   public static IRuleBuilderOptions<T, string> MustBeValueObject<T, TValueObject>(
             this IRuleBuilder<T, string> ruleBuilder,
             Func<string, Result<TValueObject, Error>> factoryMethod)

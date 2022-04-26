@@ -1,11 +1,13 @@
+using CelebrationBoard.Domain.Authentication;
+
 namespace CelebrationBoard.Application.Celebrations;
 
 public sealed class PostCelebrationCommand : IRequest<Result<long, Error>>
 {
-  public readonly long UserId;
-  public readonly string Title;
-  public readonly string Content;
-  public readonly string AccessLevel;
+  public long UserId { get; }
+  public string Title { get; }
+  public string Content { get; }
+  public string AccessLevel { get; }
 
   public PostCelebrationCommand(long userId, string title, string content, string accessLevel)
   {
@@ -18,17 +20,20 @@ public sealed class PostCelebrationCommand : IRequest<Result<long, Error>>
   internal sealed class PostCelebrationCommandHandler : IRequestHandler<PostCelebrationCommand, Result<long, Error>>
   {
     private readonly CelebrationBoardContext _context;
+    private readonly ICurrentUserService _currentUserService;
 
-    public PostCelebrationCommandHandler(CelebrationBoardContext context)
+    public PostCelebrationCommandHandler(CelebrationBoardContext context, ICurrentUserService currentUserService)
     {
       _context = context;
+      this._currentUserService = currentUserService;
     }
 
     public Task<Result<long, Error>> Handle(PostCelebrationCommand request, CancellationToken cancellationToken)
     {
+      var currentUserId = _currentUserService.UserId;
       var user = this._context.Set<User>().Find(request.UserId);
-      if (user is null)
-        return Task.FromResult(Result.Failure<long, Error>(Errors.General.NotFound(nameof(User), request.UserId)));
+      if (user is null || user.UserId.ToString() != currentUserId)
+        return Task.FromResult(Result.Failure<long, Error>(Errors.General.Unauthorised(request.UserId)));
 
       var title = Domain.Celebrations.Title.Create(request.Title).Value;
       var content = Domain.Celebrations.Content.Create(request.Content).Value;

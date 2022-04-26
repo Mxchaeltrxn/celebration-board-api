@@ -2,14 +2,17 @@ namespace CelebrationBoard.Application.Celebrations;
 
 public sealed class EditCelebrationPrivacyLevelCommand : IRequest<UnitResult<Error>>
 {
-  public readonly long Id;
-  public readonly string PrivacyLevel;
+  public long UserId { get; }
+  public long CelebrationId { get; }
+  public string PrivacyLevel { get; }
 
-  public EditCelebrationPrivacyLevelCommand(long id, string privacyLevel)
+  public EditCelebrationPrivacyLevelCommand(long userId, long celebrationId, string privacyLevel)
   {
-    this.Id = id;
+    this.UserId = userId;
+    this.CelebrationId = celebrationId;
     this.PrivacyLevel = privacyLevel;
   }
+
 
   internal sealed class EditCelebrationPrivacyLevelCommandHandler : IRequestHandler<EditCelebrationPrivacyLevelCommand, UnitResult<Error>>
   {
@@ -22,9 +25,9 @@ public sealed class EditCelebrationPrivacyLevelCommand : IRequest<UnitResult<Err
 
     public async Task<UnitResult<Error>> Handle(EditCelebrationPrivacyLevelCommand request, CancellationToken cancellationToken)
     {
-      var celebration = this._context.Set<Celebration>().Find(request.Id);
+      var celebration = this._context.Set<Celebration>().Find(request.UserId);
       if (celebration is null)
-        return UnitResult.Failure(Errors.General.NotFound(nameof(Celebration), request.Id));
+        return UnitResult.Failure(Errors.General.NotFound(nameof(Celebration), request.UserId));
 
       celebration!.AccessLevel = Domain.Celebrations.PrivacyLevel.Create(request.PrivacyLevel).Value;
       this._context.Set<Celebration>().Update(celebration);
